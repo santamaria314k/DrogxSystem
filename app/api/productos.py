@@ -4,6 +4,7 @@ from app.database.connection import get_db
 from app.security import (
     ROLE_ADMIN,
     ROLE_FARMACEUTICO,
+    ROLE_VENDEDOR,
     get_current_user,
     require_roles,
 )
@@ -32,7 +33,7 @@ def obtener_producto(id: int, db: Session = Depends(get_db)):
     "/productos",
     response_model=ProductoOut,
     tags=["Productos"],
-    dependencies=[Depends(require_roles(ROLE_ADMIN, ROLE_FARMACEUTICO))],
+    dependencies=[Depends(require_roles(ROLE_ADMIN,ROLE_VENDEDOR, ROLE_FARMACEUTICO))],
 )
 def crear_producto(producto: ProductoCreate, db: Session = Depends(get_db)):
     obj = Producto(**producto.model_dump())
@@ -43,7 +44,7 @@ def crear_producto(producto: ProductoCreate, db: Session = Depends(get_db)):
     "/productos/{id}",
     response_model=ProductoOut,
     tags=["Productos"],
-    dependencies=[Depends(require_roles(ROLE_ADMIN, ROLE_FARMACEUTICO))],
+    dependencies=[Depends(require_roles(ROLE_ADMIN))],
 )
 def actualizar_producto(id: int, datos: ProductoCreate, db: Session = Depends(get_db)):
     obj = db.query(Producto).filter(Producto.id_producto == id).first()
@@ -56,7 +57,7 @@ def actualizar_producto(id: int, datos: ProductoCreate, db: Session = Depends(ge
 @router.delete(
     "/productos/{id}",
     tags=["Productos"],
-    dependencies=[Depends(require_roles(ROLE_ADMIN, ROLE_FARMACEUTICO))],
+    dependencies=[Depends(require_roles(ROLE_ADMIN))],
 )
 def eliminar_producto(id: int, db: Session = Depends(get_db)):
     obj = db.query(Producto).filter(Producto.id_producto == id).first()

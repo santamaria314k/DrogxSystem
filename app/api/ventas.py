@@ -4,6 +4,7 @@ from app.database.connection import get_db
 from app.security import (
     ROLE_ADMIN,
     ROLE_VENDEDOR,
+    ROLE_FARMACEUTICO,
     get_current_user,
     require_roles,
 )
@@ -32,7 +33,7 @@ def obtener_venta(id: int, db: Session = Depends(get_db)):
     "/ventas",
     response_model=VentaOut,
     tags=["Ventas"],
-    dependencies=[Depends(require_roles(ROLE_ADMIN, ROLE_VENDEDOR))],
+    dependencies=[Depends(require_roles(ROLE_ADMIN, ROLE_FARMACEUTICO, ROLE_VENDEDOR))],
 )
 def crear_venta(venta: VentaCreate, db: Session = Depends(get_db)):
     # Verificar stock
@@ -49,7 +50,7 @@ def crear_venta(venta: VentaCreate, db: Session = Depends(get_db)):
 @router.delete(
     "/ventas/{id}",
     tags=["Ventas"],
-    dependencies=[Depends(require_roles(ROLE_ADMIN, ROLE_VENDEDOR))],
+    dependencies=[Depends(require_roles(ROLE_ADMIN))],
 )
 def eliminar_venta(id: int, db: Session = Depends(get_db)):
     obj = db.query(Venta).filter(Venta.id_venta == id).first()

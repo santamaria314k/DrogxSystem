@@ -24,5 +24,5 @@ class Producto(Base):
     via         = relationship("ViaAdministracion",back_populates="productos")
     vigencia    = relationship("Vigencia",         back_populates="productos")
     laboratorio = relationship("Laboratorio",      back_populates="productos")
-    inventarios = relationship("Inventario",       back_populates="producto")
-    ventas      = relationship("Venta",            back_populates="producto")
+    inventarios = relationship("Inventario",       back_populates="producto",cascade="all, delete-orphan")
+    ventas      = relationship("Venta",            back_populates="producto",cascade="all, delete-orphan")
