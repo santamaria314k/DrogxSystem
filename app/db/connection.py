@@ -7,7 +7,8 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     DATABASE_URL = "mysql+pymysql://root:DWtYWagoPCKgsZupDNoxdxLMYaaHWMze@shinkansen.proxy.rlwy.net:52419/railway"
 
-DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://")
+if DATABASE_URL.startswith("mysql://"):
+    DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
 
 engine = create_engine(
     DATABASE_URL,
