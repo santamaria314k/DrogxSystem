@@ -27,13 +27,15 @@ app.include_router(router, prefix="/api/v1")
 
 @app.on_event("startup")
 def startup_db_init():
-    for _ in range(30):
+    for i in range(30):
         try:
             with engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
             Base.metadata.create_all(bind=engine)
+            print(" Conectado a MySQL")
             return
-        except Exception:
+        except Exception as e:
+            print(f" Intento {i+1} falló:", e)  
             time.sleep(2)
 
     raise RuntimeError("No se pudo conectar a MySQL durante el arranque")
