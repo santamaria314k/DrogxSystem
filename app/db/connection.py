@@ -5,11 +5,9 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
-    raise ValueError("DATABASE_URL no está definida")
+    DATABASE_URL = "mysql+pymysql://root:DWtYWagoPCKgsZupDNoxdxLMYaaHWMze@shinkansen.proxy.rlwy.net:52419/railway"
 
 DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://")
-
-DATABASE_URL = "mysql+pymysql://root:DWtYWagoPCKgsZupDNoxdxLMYaaHWMze@shinkansen.proxy.rlwy.net:52419/railway"
 
 engine = create_engine(
     DATABASE_URL,
