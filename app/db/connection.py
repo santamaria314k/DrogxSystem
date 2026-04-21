@@ -9,6 +9,8 @@ if not DATABASE_URL:
 
 DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://")
 
+DATABASE_URL = "mysql+pymysql://root:DWtYWagoPCKgsZupDNoxdxLMYaaHWMze@shinkansen.proxy.rlwy.net:52419/railway"
+
 engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True,
