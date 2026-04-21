@@ -1,20 +1,25 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
-from app.config import settings
 
-DATABASE_URL = (
-    f"mysql+pymysql://{settings.DB_USER}:{settings.DB_PASSWORD}"
-    f"@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL no está definida")
+
+DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://")
+
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True,
+    pool_recycle=280
 )
-
-engine = create_engine(DATABASE_URL, echo=False)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
 
-# Dependencia para inyectar la sesión en cada endpoint
 def get_db():
     db = SessionLocal()
     try:
